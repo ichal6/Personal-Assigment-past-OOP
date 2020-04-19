@@ -17,6 +17,15 @@ public class Book {
         this.price = Float.parseFloat(data[6]);
     }
 
+    public Book(Builder builder){
+        this.ISBN = builder.getISBN();
+        this.author = new Author(builder.getFirstName(), builder.getSurname());
+        this.title = builder.getTitle();
+        this.publisher = new Publisher(builder.getName());
+        this.publicationYear = builder.getPublicationYear();
+        this.price = builder.getPrice();
+    }
+
     @Override
     public String toString() {
         String returnValue;
@@ -30,4 +39,9 @@ public class Book {
                 price);
         return returnValue;
     }
+
+    public String getTitle() {
+        return title;
+    }
+
 }
