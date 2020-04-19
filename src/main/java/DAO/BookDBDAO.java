@@ -174,28 +174,29 @@ public class BookDBDAO implements IDAOBook{
 
     @Override
     public Map<String, Book> searchBooks(String surname) {
+        dicOfBooks = new TreeMap<>();
         try (Connection con = DriverManager.getConnection(url, user, password);
-             PreparedStatement pst = con.prepareStatement("select  \"ISBN\" ,first_name, surname, title, name ,  publication_year, price from books inner join authors on books.author_id=authors.ID inner join publishers on books.publisher_id=publishers.ID WHERE surname = ?")
-
-        ) {
+             PreparedStatement pst = con.prepareStatement(
+                     "select  \"ISBN\" ,first_name, surname, title, name ,  publication_year, price from books inner join authors on books.author_id=authors.ID inner join publishers on books.publisher_id=publishers.ID WHERE surname = ?"))
+        {
             pst.setString(1, surname);
             ResultSet rs = pst.executeQuery();
 
-            int attributesNumber = 7;
-            dicOfBooks = new TreeMap<>();
-            String[] bookAttributes = new String[attributesNumber];
-
             while (rs.next()) {
-                for(int index = 0;index < attributesNumber; index++){
-                    bookAttributes[index] = rs.getString(index+1);
-                }
-                Book book = new Book(bookAttributes);
-                dicOfBooks.put(bookAttributes[3] ,book);
-                con.close();
+                Book book = new Book(new Builder()
+                        .withISBN(rs.getLong(0))
+                        .withFirstName(rs.getString(2))
+                        .withSurname(rs.getString(3))
+                        .withTitle(rs.getString(4))
+                        .withName(rs.getString(5))
+                        .withPublicationYear(rs.getInt(6))
+                        .withPrice(rs.getFloat(7)));
+
+                dicOfBooks.put(book.getTitle() ,book);
             }
         } catch (SQLException ex) {
             Logger lgr = Logger.getLogger(BookDBDAO.class.getName());
-            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+            lgr.log(Level.SEVERE,"Return failed books " + ex.getMessage(), ex);
         }
         return dicOfBooks;
     }
