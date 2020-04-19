@@ -1,4 +1,4 @@
 package View;
 
-public class OutputManager {
+public class OutputManager extends AbstractOutput{
 }

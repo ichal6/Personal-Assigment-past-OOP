@@ -1,4 +1,4 @@
 package View;
 
-public class InputManager {
+public class InputManager extends AbstractInput {
 }
