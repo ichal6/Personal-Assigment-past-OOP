@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface IDAOBook {
-    void addBook();
-    void editBook();
-    void deleteBook();
+    void addBook(Book newBook);
+    void editBook(Book newBook);
+    void deleteBook(Book newBook);
     List<Book> searchBooks();
     Map<String,Book> getBooks();
 }
