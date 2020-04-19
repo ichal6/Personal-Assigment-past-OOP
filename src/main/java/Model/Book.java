@@ -17,4 +17,17 @@ public class Book {
         this.price = Float.parseFloat(data[6]);
     }
 
+    @Override
+    public String toString() {
+        String returnValue;
+        returnValue = String.format("| %-5d | %-20s | %-20s | %-20s | %-20s  %-20s | %-20s ",
+                ISBN,
+                author.getFirstName(),
+                author.getSurname(),
+                title,
+                publisher.getName(),
+                publicationYear,
+                price);
+        return returnValue;
+    }
 }
