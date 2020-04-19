@@ -18,12 +18,14 @@ public class ControllerLibrary {
     }
 
     private void displayMenu(){
-        output.print("1. Add new Book\n2. Edit book\n3. Delete book\n" +
-                " 4. search books\n 5. Display all Books");
+        output.print("0. exit\n1. Add new Book\n2. Edit book\n3. Delete book\n" +
+                "4. search books\n5. Display all Books");
     }
 
-    private void switchOptions(int optionNumber){
+    private boolean switchOptions(int optionNumber){
         switch (optionNumber){
+            case 0:
+                return false;
             case 1:
                 dao.addBook(createBook());
 
@@ -45,6 +47,7 @@ public class ControllerLibrary {
                 output.print(dao.getBooks());
                 break;
         }
+        return true;
     }
 
     private String[] createBook(){
@@ -61,9 +64,12 @@ public class ControllerLibrary {
     }
 
     public void run(){
-        displayMenu();
-        int optionNumber = input.getInputFromUser("Please provide options:");
-        switchOptions(optionNumber);
 
+        boolean isRun;
+        do{
+            displayMenu();
+            int optionNumber = input.getInputFromUser("Please provide options:");
+            isRun = switchOptions(optionNumber);
+        }while(isRun);
     }
 }
