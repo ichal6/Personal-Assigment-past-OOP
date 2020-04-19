@@ -2,7 +2,6 @@ package DAO;
 
 import Model.Book;
 
-import java.util.List;
 import java.util.Map;
 
 public interface IDAOBook {
@@ -11,4 +10,6 @@ public interface IDAOBook {
     void deleteBook(long ISBN);
     Map<String,Book> searchBooks(String surname);
     Map<String,Book> getBooks();
+    boolean checkPublisher(String nameOfPublisher);
+    void createNewPublisher(String nameOfPublisher, String publisherID);
 }

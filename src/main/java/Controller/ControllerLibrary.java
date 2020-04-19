@@ -27,7 +27,13 @@ public class ControllerLibrary {
             case 0:
                 return false;
             case 1:
-                dao.addBook(createBook());
+                String[] data = createBook();
+
+                while(!dao.checkPublisher(data[4])){
+                    String publisherID = input.getStringInput("Please provide new id for publisher");
+                    dao.createNewPublisher(data[4], publisherID);
+                }
+                dao.addBook(data);
 
                 break;
             case 2:

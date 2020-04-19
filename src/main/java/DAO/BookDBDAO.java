@@ -28,9 +28,9 @@ public class BookDBDAO implements IDAOBook{
 
     @Override
     public void addBook(String[] newBook) {
-        String AddToUser_tableStatement = "INSERT INTO books VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO books VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection con = DriverManager.getConnection(url, user, password);
-             PreparedStatement pst = con.prepareStatement(AddToUser_tableStatement))
+             PreparedStatement pst = con.prepareStatement(query))
         {
             int idAuthor = addToAuthors(newBook[1],newBook[2]);
             String publisherID = addToPublishers(newBook[4]);
@@ -47,45 +47,53 @@ public class BookDBDAO implements IDAOBook{
 
     }
 
-    private String addToPublishers(String nameOfPublisher) {
-        try (Connection con = DriverManager.getConnection(url, user, password);
-             PreparedStatement pst = con.prepareStatement("select  ID from publishers WHERE name = ?")
+    private String addToPublishers(String nameOfPublisher) throws SQLException{
+        Connection con = DriverManager.getConnection(url, user, password);
+        PreparedStatement pst = con.prepareStatement("select  ID from publishers WHERE name = ?");
 
-        ) {
+        pst.setString(1, nameOfPublisher);
+
+        ResultSet rs = pst.executeQuery();
+
+        if (rs.next()) {
+            return rs.getString(1);
+        }
+        else{
+            throw new SQLException();
+        }
+    }
+
+    @Override
+    public boolean checkPublisher(String nameOfPublisher){
+        try(
+        Connection con = DriverManager.getConnection(url, user, password);
+        PreparedStatement pst = con.prepareStatement("select  ID from publishers WHERE name = ?")) {
             pst.setString(1, nameOfPublisher);
 
             ResultSet rs = pst.executeQuery();
 
             if (rs.next()) {
-                return rs.getString(1);
+                return true;
+            } else {
+                return false;
             }
-            else{
-                InputManager input = new InputManager(new OutputManager());
-                String publisherID = input.getStringInput("Please provide new id for publisher");
-                createNewPublisher(nameOfPublisher, publisherID);
-                return publisherID;
-            }
-        } catch (SQLException ex) {
-            Logger lgr = Logger.getLogger(BookDBDAO.class.getName());
-            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+        }catch(SQLException ex){
+            return false;
         }
-        return "";
     }
 
-    private void createNewPublisher(String nameOfPublisher, String publisherID) {
-        String AddToUser_tableStatement = "INSERT INTO publishers VALUES (?, ?)";
+    @Override
+    public void createNewPublisher(String nameOfPublisher, String publisherID) {
+        String query = "INSERT INTO publishers VALUES (?, ?)";
         try (Connection con = DriverManager.getConnection(url, user, password);
-             PreparedStatement pst = con.prepareStatement(AddToUser_tableStatement))
+             PreparedStatement pst = con.prepareStatement(query))
         {
             pst.setString(2, nameOfPublisher);
             pst.setString(1, publisherID);
             pst.executeUpdate();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-
+        } catch (SQLException ex) {
+            ex.getMessage();
         }
-
-
     }
 
     private int addToAuthors(String name, String lastName) throws SQLException {
@@ -118,11 +126,12 @@ public class BookDBDAO implements IDAOBook{
         pst.executeUpdate();
 
         pst = con.prepareStatement("select  ID from authors  WHERE first_name= ? AND surname = ?");
-
         pst.setString(1, name);
         pst.setString(2, lastName);
         ResultSet rs = pst.executeQuery();
         con.close();
+
+        rs.next();
 
         return rs.getInt(1);
     }
