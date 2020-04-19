@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface IDAOBook {
-    void addBook(Book newBook);
+    void addBook(String[] newBook);
     void editBook(Book newBook);
     void deleteBook(long ISBN);
     Map<String,Book> searchBooks(String surname);

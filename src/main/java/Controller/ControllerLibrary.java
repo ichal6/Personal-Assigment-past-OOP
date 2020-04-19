@@ -44,7 +44,7 @@ public class ControllerLibrary {
         }
     }
 
-    private Book createBook(){
+    private String[] createBook(){
         String[] data = new String[7];
         String[] questions = {"ISBN", "first name of author", "last name of author","title" ,"publisher", "Year of publication", "price"};
         for(int index = 0; index < questions.length; index++){
@@ -54,8 +54,7 @@ public class ControllerLibrary {
                 index--;
             }
         }
-        Book newBook = new Book(data);
-        return newBook;
+        return data;
     }
 
     public void run(){
