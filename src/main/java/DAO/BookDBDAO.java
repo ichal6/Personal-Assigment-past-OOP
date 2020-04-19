@@ -151,9 +151,9 @@ public class BookDBDAO implements IDAOBook{
             pst.setInt(1, price);
             pst.executeUpdate();
 
-        } catch (SQLException throwables) {
-          throwables.printStackTrace();
-
+        } catch (SQLException ex) {
+            Logger lgr = Logger.getLogger(BookDBDAO.class.getName());
+            lgr.log(Level.SEVERE,"Nothing delete " + ex.getMessage(), ex);
         }
     }
 
