@@ -8,7 +8,7 @@ import java.util.Map;
 public interface IDAOBook {
     void addBook(Book newBook);
     void editBook(Book newBook);
-    void deleteBook(Book newBook);
-    List<Book> searchBooks();
+    void deleteBook(long ISBN);
+    Map<String,Book> searchBooks(String surname);
     Map<String,Book> getBooks();
 }
