@@ -41,8 +41,8 @@ public class BookDBDAO implements IDAOBook{
             pst.setInt(5, Integer.parseInt(newBook[5]));
             pst.setFloat(6, Float.parseFloat(newBook[6]));
             pst.executeUpdate();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException ex) {
+            ex.getMessage();
         }
 
     }
