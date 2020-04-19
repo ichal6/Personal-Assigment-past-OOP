@@ -25,10 +25,9 @@ public class BookDBDAO implements IDAOBook{
         password = prop.getProperty("db.passwd");
 
     }
+
     @Override
     public void addBook(String[] newBook) {
-        int idAuthor = addToAuthors(newBook[1],newBook[2]);
-        String publisherID = addToPublishers(newBook[4]);
         String AddToUser_tableStatement = "INSERT INTO books VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection con = DriverManager.getConnection(url, user, password);
              PreparedStatement pst = con.prepareStatement(AddToUser_tableStatement))
@@ -89,58 +88,43 @@ public class BookDBDAO implements IDAOBook{
 
     }
 
-    private int addToAuthors(String name, String lastName) {
-        try (Connection con = DriverManager.getConnection(url, user, password);
-             PreparedStatement pst = con.prepareStatement("select  ID from authors WHERE first_name = ? AND surname = ?")
+    private int addToAuthors(String name, String lastName) throws SQLException {
+        Connection con = DriverManager.getConnection(url, user, password);
+        PreparedStatement pst = con.prepareStatement(
+                "select  ID from authors WHERE first_name = ? AND surname = ?");
+        pst.setString(1, name);
+        pst.setString(2, lastName);
 
-        ) {
-            pst.setString(1, name);
-            pst.setString(2, lastName);
-            ResultSet rs = pst.executeQuery();
+        ResultSet rs = pst.executeQuery();
+        con.close();
 
-            if (rs.next()) {
-                return rs.getInt(1);
-            }
-            else{
-                return createNewAuthors(name, lastName);
-            }
-        } catch (SQLException ex) {
-            Logger lgr = Logger.getLogger(BookDBDAO.class.getName());
-            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+        if (rs.next()) {
+            return rs.getInt(1);
         }
-        return 0;
+        else{
+            return createNewAuthors(name, lastName);
+        }
+
     }
 
-    private int createNewAuthors(String name, String lastName){
+    private int createNewAuthors(String name, String lastName) throws SQLException {
         String AddToUser_tableStatement = "INSERT INTO authors VALUES (DEFAULT, ?, ?)";
-        try (Connection con = DriverManager.getConnection(url, user, password);
-             PreparedStatement pst = con.prepareStatement(AddToUser_tableStatement))
-        {
-            pst.setString(1, name);
-            pst.setString(2, lastName);
-            pst.executeUpdate();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
 
-        }
+        Connection con = DriverManager.getConnection(url, user, password);
+        PreparedStatement pst = con.prepareStatement(AddToUser_tableStatement);
 
+        pst.setString(1, name);
+        pst.setString(2, lastName);
+        pst.executeUpdate();
 
-        try (Connection con = DriverManager.getConnection(url, user, password);
-             PreparedStatement pst = con.prepareStatement("select  ID from authors  WHERE first_name= ? AND surname = ?")
+        pst = con.prepareStatement("select  ID from authors  WHERE first_name= ? AND surname = ?");
 
-        ) {
-            pst.setString(1, name);
-            pst.setString(2, lastName);
-            ResultSet rs = pst.executeQuery();
+        pst.setString(1, name);
+        pst.setString(2, lastName);
+        ResultSet rs = pst.executeQuery();
+        con.close();
 
-            if (rs.next()) {
-                return rs.getInt(1);
-            }
-        } catch (SQLException ex) {
-            Logger lgr = Logger.getLogger(BookDBDAO.class.getName());
-            lgr.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-        return 0;
+        return rs.getInt(1);
     }
 
     @Override
