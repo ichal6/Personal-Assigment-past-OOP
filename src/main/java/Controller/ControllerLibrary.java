@@ -34,6 +34,9 @@ public class ControllerLibrary {
                 break;
             case 4:
                 break;
+            case 5:
+                output.print(dao.getBooks());
+                break;
         }
     }
 
@@ -52,8 +55,9 @@ public class ControllerLibrary {
     }
 
     public void run(){
-        int optionNumber = input.getInputFromUser("Please provide options:");
         displayMenu();
+        int optionNumber = input.getInputFromUser("Please provide options:");
+        switchOptions(optionNumber);
 
     }
 }
