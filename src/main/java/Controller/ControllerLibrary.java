@@ -31,8 +31,12 @@ public class ControllerLibrary {
             case 2:
                 break;
             case 3:
+                long ISBN = input.getLongFromUser("Please provide ISBN:");
+                dao.deleteBook(ISBN);
                 break;
             case 4:
+                String surname = input.getStringInput("Please provide surname of author");
+                output.print(dao.searchBooks(surname));
                 break;
             case 5:
                 output.print(dao.getBooks());
