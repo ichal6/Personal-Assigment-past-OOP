@@ -33,6 +33,8 @@ public class BookDBDAO implements IDAOBook{
         try (Connection con = DriverManager.getConnection(url, user, password);
              PreparedStatement pst = con.prepareStatement(AddToUser_tableStatement))
         {
+            int idAuthor = addToAuthors(newBook[1],newBook[2]);
+            String publisherID = addToPublishers(newBook[4]);
             pst.setLong(1, Long.parseLong(newBook[0]));
             pst.setInt(2, idAuthor);
             pst.setString(3, newBook[3]);
@@ -212,7 +214,7 @@ public class BookDBDAO implements IDAOBook{
 
             while (rs.next()) {
                 Book book = new Book(new Builder()
-                        .withISBN(rs.getLong(0))
+                        .withISBN(rs.getLong(1))
                         .withFirstName(rs.getString(2))
                         .withSurname(rs.getString(3))
                         .withTitle(rs.getString(4))
