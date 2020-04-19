@@ -20,7 +20,7 @@ public class Book {
     @Override
     public String toString() {
         String returnValue;
-        returnValue = String.format("| %-5d | %-20s | %-20s | %-20s | %-20s  %-20s | %-20s ",
+        returnValue = String.format("| %-20d | %-20s | %-20s | %-30s | %-20s  %-20s | %-20s ",
                 ISBN,
                 author.getFirstName(),
                 author.getSurname(),
