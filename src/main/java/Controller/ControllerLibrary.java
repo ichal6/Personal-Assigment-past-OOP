@@ -29,10 +29,13 @@ public class ControllerLibrary {
 
                 break;
             case 2:
+                long ISBN = input.getLongFromUser("Please provide ISBN to remove");
+                int price =  input.getInputFromUser("Please provide new price of product");
+                dao.editBook(ISBN ,price);
                 break;
             case 3:
-                long ISBN = input.getLongFromUser("Please provide ISBN:");
-                dao.deleteBook(ISBN);
+                long ISBN_search = input.getLongFromUser("Please provide ISBN:");
+                dao.deleteBook(ISBN_search);
                 break;
             case 4:
                 String surname = input.getStringInput("Please provide surname of author");
