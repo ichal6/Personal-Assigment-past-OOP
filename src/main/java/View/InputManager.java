@@ -31,4 +31,18 @@ public class InputManager extends AbstractInput {
 
         return input;
     }
+
+    @Override
+    public long getLongFromUser(String message) {
+        output.print(message);
+        long input = 0L;
+        Scanner scanFromUser = new Scanner(System.in);
+
+        while(!scanFromUser.hasNextLong()){
+            output.print("Wrong input! Please insert the integer number.");
+            scanFromUser.next();
+        }
+        input = scanFromUser.nextLong();
+        return input;
+    }
 }
