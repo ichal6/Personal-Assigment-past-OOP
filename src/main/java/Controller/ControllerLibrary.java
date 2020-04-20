@@ -64,6 +64,7 @@ public class ControllerLibrary {
             case 6:
                 break;
             case 7:
+                output.print(dao.getBooksFromLastTenYears());
                 break;
             case 8:
                 output.print(String.format("Sum all price of books = %.2f", dao.getSumOfLibrary()));
