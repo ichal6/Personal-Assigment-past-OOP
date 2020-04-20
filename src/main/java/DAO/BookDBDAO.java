@@ -3,13 +3,10 @@ package DAO;
 import Model.Author;
 import Model.Book;
 import Model.Builder;
-import View.InputManager;
-import View.OutputManager;
 
 import java.io.IOException;
 import java.sql.*;
 import java.util.*;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
