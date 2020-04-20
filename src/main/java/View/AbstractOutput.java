@@ -11,5 +11,7 @@ public abstract class AbstractOutput {
 
     public abstract void print(Map<String, Book> books);
 
+    public abstract void printAuthors(Map<Author, Integer> authors);
+
     public abstract void print(List<Author> allAuthors);
 }

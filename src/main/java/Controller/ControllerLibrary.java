@@ -62,6 +62,7 @@ public class ControllerLibrary {
                 output.print(dao.getBooks());
                 break;
             case 6:
+                output.printAuthors(dao.getCountBooksByAuthor());
                 break;
             case 7:
                 output.print(dao.getBooksFromLastTenYears());

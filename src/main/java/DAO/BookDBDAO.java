@@ -230,7 +230,25 @@ public class BookDBDAO implements IDAOBook{
 
     @Override
     public Map<Author, Integer> getCountBooksByAuthor() {
-        return null;
+        List<Author> authorsList = getAllAuthors();
+        Map<Author, Integer> dicOfAuthors = new HashMap<>();
+        for(Author singleAuthor: authorsList){
+            String query = String.format("select  * from books inner join authors on books.author_id=authors.ID inner join publishers on books.publisher_id=publishers.ID WHERE first_name = '%s' AND surname = '%s'",singleAuthor.getFirstName(), singleAuthor.getSurname());
+            int count = 0;
+            try (Connection con = DriverManager.getConnection(url, user, password);
+                 PreparedStatement pst = con.prepareStatement(query);
+                 ResultSet rs = pst.executeQuery()) {
+
+                while (rs.next()) {
+                    count++;
+                }
+                dicOfAuthors.put(singleAuthor, count);
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(BookDBDAO.class.getName());
+                lgr.log(Level.SEVERE,"Return failed books " + ex.getMessage(), ex);
+            }
+        }
+        return dicOfAuthors;
     }
 
     @Override
