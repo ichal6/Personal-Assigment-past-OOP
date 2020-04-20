@@ -15,7 +15,7 @@ public interface IDAOBook {
     Map<String,Book> getBooks();
     Map<Author, Integer> getCountBooksByAuthor();
     Map<String, Book> getBooksFromLastTenYears();
-    int getSumOfLibrary();
+    float getSumOfLibrary();
     List<Author> getAllAuthors();
     boolean checkPublisher(String nameOfPublisher);
     void createNewPublisher(String nameOfPublisher, String publisherID);

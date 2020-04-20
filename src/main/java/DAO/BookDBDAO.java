@@ -238,8 +238,22 @@ public class BookDBDAO implements IDAOBook{
     }
 
     @Override
-    public int getSumOfLibrary() {
-        return 0;
+    public float getSumOfLibrary() {
+        float sum = 0;
+        String query = "SELECT price FROM books";
+        try (Connection con = DriverManager.getConnection(url, user, password);
+             PreparedStatement pst = con.prepareStatement(query);
+             ResultSet rs = pst.executeQuery()) {
+
+            while (rs.next()) {
+                sum += rs.getFloat(1);
+                //listOfAuthors.add(new Author(rs.getString(1), rs.getString(2)));
+            }
+        } catch (SQLException ex) {
+            Logger lgr = Logger.getLogger(BookDBDAO.class.getName());
+            lgr.log(Level.SEVERE,"Failed return all of prices " + ex.getMessage(), ex);
+        }
+        return sum;
     }
 
     @Override
