@@ -1,5 +1,6 @@
 package DAO;
 
+import Model.Author;
 import Model.Book;
 import Model.Builder;
 import View.InputManager;
@@ -224,5 +225,38 @@ public class BookDBDAO implements IDAOBook{
             lgr.log(Level.SEVERE,"Return failed books " + ex.getMessage(), ex);
         }
         return dicOfBooks;
+    }
+
+    @Override
+    public Map<Author, Integer> getCountBooksByAuthor() {
+        return null;
+    }
+
+    @Override
+    public Map<String, Book> getBooksFromLastTenYears() {
+        return null;
+    }
+
+    @Override
+    public int getSumOfLibrary() {
+        return 0;
+    }
+
+    @Override
+    public List<Author> getAllAuthors() {
+        List<Author> listOfAuthors = new ArrayList<>();
+        String query = "SELECT first_name, surname FROM authors";
+        try (Connection con = DriverManager.getConnection(url, user, password);
+             PreparedStatement pst = con.prepareStatement(query);
+             ResultSet rs = pst.executeQuery()) {
+
+            while (rs.next()) {
+                listOfAuthors.add(new Author(rs.getString(1), rs.getString(2)));
+            }
+        } catch (SQLException ex) {
+            Logger lgr = Logger.getLogger(BookDBDAO.class.getName());
+            lgr.log(Level.SEVERE,"Failed get all authors " + ex.getMessage(), ex);
+        }
+        return listOfAuthors;
     }
 }

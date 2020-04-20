@@ -29,7 +29,9 @@ public class ControllerLibrary {
 
     private void displayMenu(){
         output.print("0. exit\n1. Add new Book\n2. Edit book\n3. Delete book\n" +
-                "4. search books\n5. Display all Books");
+                "4. search books\n5. Display all Books\n6. How many books author created\n" +
+                "7. All books written in the last ten years\n8. Sum of prices all books\n" +
+                "9. Display full name of author.");
     }
 
     private boolean switchOptions(int optionNumber){
@@ -58,6 +60,15 @@ public class ControllerLibrary {
                 break;
             case 5:
                 output.print(dao.getBooks());
+                break;
+            case 6:
+                break;
+            case 7:
+                break;
+            case 8:
+                break;
+            case 9:
+                output.print(dao.getAllAuthors());
                 break;
         }
         return true;
