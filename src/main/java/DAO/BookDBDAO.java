@@ -27,22 +27,23 @@ public class BookDBDAO implements IDAOBook{
     }
 
     @Override
-    public void addBook(String[] newBook) {
+    public void addBook(Builder newBook) {
         String query = "INSERT INTO books VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection con = DriverManager.getConnection(url, user, password);
              PreparedStatement pst = con.prepareStatement(query))
         {
-            int idAuthor = addToAuthors(newBook[1],newBook[2]);
-            String publisherID = addToPublishers(newBook[4]);
-            pst.setLong(1, Long.parseLong(newBook[0]));
+            int idAuthor = addToAuthors(newBook.getFirstName(),newBook.getSurname());
+            String publisherID = addToPublishers(newBook.getName());
+            pst.setLong(1, newBook.getISBN());
             pst.setInt(2, idAuthor);
-            pst.setString(3, newBook[3]);
+            pst.setString(3, newBook.getTitle());
             pst.setString(4, publisherID);
-            pst.setInt(5, Integer.parseInt(newBook[5]));
-            pst.setFloat(6, Float.parseFloat(newBook[6]));
+            pst.setInt(5, newBook.getPublicationYear());
+            pst.setFloat(6, newBook.getPrice());
             pst.executeUpdate();
         } catch (SQLException ex) {
-            ex.getMessage();
+            Logger lgr = Logger.getLogger(BookDBDAO.class.getName());
+            lgr.log(Level.SEVERE,"You cannot insert a book ", ex);
         }
 
     }
@@ -92,7 +93,8 @@ public class BookDBDAO implements IDAOBook{
             pst.setString(1, publisherID);
             pst.executeUpdate();
         } catch (SQLException ex) {
-            ex.getMessage();
+            Logger lgr = Logger.getLogger(BookDBDAO.class.getName());
+            lgr.log(Level.SEVERE,"You cannot insert a book ", ex);
         }
     }
 
