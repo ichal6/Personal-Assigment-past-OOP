@@ -82,13 +82,13 @@ public class BookDBDAO implements IDAOBook{
     }
 
     @Override
-    public void editBook(long ISBN, int price) {
+    public void editBook(long ISBN, float price) {
         String updateStatement = ("UPDATE books SET price = ? WHERE \"ISBN\" = ?");
         try(Connection con = DriverManager.getConnection(url, user, password);
             PreparedStatement pst = con.prepareStatement(updateStatement))
         {
             pst.setLong(2, ISBN);
-            pst.setInt(1, price);
+            pst.setFloat(1, price);
             pst.executeUpdate();
 
         } catch (SQLException ex) {

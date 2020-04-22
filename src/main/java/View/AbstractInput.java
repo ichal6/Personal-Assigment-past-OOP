@@ -6,4 +6,6 @@ public abstract class AbstractInput {
     public abstract String getStringInput(String format);
 
     public abstract long getLongFromUser(String message);
+
+    public abstract float getFloatFromUser(String message);
 }

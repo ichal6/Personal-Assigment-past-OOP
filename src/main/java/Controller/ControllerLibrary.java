@@ -42,8 +42,8 @@ public class ControllerLibrary {
                 addBook();
                 break;
             case 2:
-                long ISBN = input.getLongFromUser("Please provide ISBN to remove");
-                int price =  input.getIntFromUser("Please provide new price of product");
+                long ISBN = input.getLongFromUser("Please provide ISBN to edit");
+                float price =  input.getFloatFromUser("Please provide new price of product");
                 dao.editBook(ISBN ,price);
                 break;
             case 3:

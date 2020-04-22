@@ -45,4 +45,18 @@ public class InputManager extends AbstractInput {
         input = scanFromUser.nextLong();
         return input;
     }
+
+    @Override
+    public float getFloatFromUser(String message) {
+        output.print(message);
+        float input = 0.0F;
+        Scanner scanFromUser = new Scanner(System.in);
+
+        while(!scanFromUser.hasNextFloat()){
+            output.print("Wrong input! Please insert the integer number.");
+            scanFromUser.next();
+        }
+        input = scanFromUser.nextFloat();
+        return input;
+    }
 }
