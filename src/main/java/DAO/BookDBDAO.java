@@ -47,22 +47,6 @@ public class BookDBDAO implements IDAOBook{
 
     }
 
-    private String addToPublishers(String nameOfPublisher) throws SQLException{
-        Connection con = DriverManager.getConnection(url, user, password);
-        PreparedStatement pst = con.prepareStatement("select  ID from publishers WHERE name = ?");
-
-        pst.setString(1, nameOfPublisher);
-
-        ResultSet rs = pst.executeQuery();
-
-        if (rs.next()) {
-            return rs.getString(1);
-        }
-        else{
-            throw new SQLException();
-        }
-    }
-
     @Override
     public boolean checkPublisher(String nameOfPublisher){
         try(
@@ -97,46 +81,6 @@ public class BookDBDAO implements IDAOBook{
         }
     }
 
-    private int addToAuthors(String name, String lastName) throws SQLException {
-        Connection con = DriverManager.getConnection(url, user, password);
-        PreparedStatement pst = con.prepareStatement(
-                "select  ID from authors WHERE first_name = ? AND surname = ?");
-        pst.setString(1, name);
-        pst.setString(2, lastName);
-
-        ResultSet rs = pst.executeQuery();
-        con.close();
-
-        if (rs.next()) {
-            return rs.getInt(1);
-        }
-        else{
-            return createNewAuthors(name, lastName);
-        }
-
-    }
-
-    private int createNewAuthors(String name, String lastName) throws SQLException {
-        String AddToUser_tableStatement = "INSERT INTO authors VALUES (DEFAULT, ?, ?)";
-
-        Connection con = DriverManager.getConnection(url, user, password);
-        PreparedStatement pst = con.prepareStatement(AddToUser_tableStatement);
-
-        pst.setString(1, name);
-        pst.setString(2, lastName);
-        pst.executeUpdate();
-
-        pst = con.prepareStatement("select  ID from authors  WHERE first_name= ? AND surname = ?");
-        pst.setString(1, name);
-        pst.setString(2, lastName);
-        ResultSet rs = pst.executeQuery();
-        con.close();
-
-        rs.next();
-
-        return rs.getInt(1);
-    }
-
     @Override
     public void editBook(long ISBN, int price) {
         String updateStatement = ("UPDATE books SET price = ? WHERE \"ISBN\" = ?");
@@ -166,28 +110,6 @@ public class BookDBDAO implements IDAOBook{
             Logger lgr = Logger.getLogger(BookDBDAO.class.getName());
             lgr.log(Level.SEVERE,"Nothing delete " + ex.getMessage(), ex);
         }
-    }
-
-    private Map<String, Book> fillDicOfBooks(ResultSet rs){
-        dicOfBooks = new TreeMap<>();
-        try {
-            while (rs.next()) {
-                Book book = new Book(new Builder()
-                        .withISBN(rs.getLong(1))
-                        .withFirstName(rs.getString(2))
-                        .withSurname(rs.getString(3))
-                        .withTitle(rs.getString(4))
-                        .withName(rs.getString(5))
-                        .withPublicationYear(rs.getInt(6))
-                        .withPrice(rs.getFloat(7)));
-
-                dicOfBooks.put(book.getTitle() ,book);
-            }
-        } catch (SQLException ex) {
-            Logger lgr = Logger.getLogger(BookDBDAO.class.getName());
-            lgr.log(Level.SEVERE,"Return failed books " + ex.getMessage(), ex);
-        }
-        return dicOfBooks;
     }
 
     @Override
@@ -312,5 +234,83 @@ public class BookDBDAO implements IDAOBook{
             lgr.log(Level.SEVERE,"Failed get all authors " + ex.getMessage(), ex);
         }
         return listOfAuthors;
+    }
+
+    private String addToPublishers(String nameOfPublisher) throws SQLException{
+        Connection con = DriverManager.getConnection(url, user, password);
+        PreparedStatement pst = con.prepareStatement("select  ID from publishers WHERE name = ?");
+
+        pst.setString(1, nameOfPublisher);
+
+        ResultSet rs = pst.executeQuery();
+
+        if (rs.next()) {
+            return rs.getString(1);
+        }
+        else{
+            throw new SQLException();
+        }
+    }
+
+    private Map<String, Book> fillDicOfBooks(ResultSet rs){
+        dicOfBooks = new TreeMap<>();
+        try {
+            while (rs.next()) {
+                Book book = new Book(new Builder()
+                        .withISBN(rs.getLong(1))
+                        .withFirstName(rs.getString(2))
+                        .withSurname(rs.getString(3))
+                        .withTitle(rs.getString(4))
+                        .withName(rs.getString(5))
+                        .withPublicationYear(rs.getInt(6))
+                        .withPrice(rs.getFloat(7)));
+
+                dicOfBooks.put(book.getTitle() ,book);
+            }
+        } catch (SQLException ex) {
+            Logger lgr = Logger.getLogger(BookDBDAO.class.getName());
+            lgr.log(Level.SEVERE,"Return failed books " + ex.getMessage(), ex);
+        }
+        return dicOfBooks;
+    }
+
+    private int createNewAuthors(String name, String lastName) throws SQLException {
+        String AddToUser_tableStatement = "INSERT INTO authors VALUES (DEFAULT, ?, ?)";
+
+        Connection con = DriverManager.getConnection(url, user, password);
+        PreparedStatement pst = con.prepareStatement(AddToUser_tableStatement);
+
+        pst.setString(1, name);
+        pst.setString(2, lastName);
+        pst.executeUpdate();
+
+        pst = con.prepareStatement("select  ID from authors  WHERE first_name= ? AND surname = ?");
+        pst.setString(1, name);
+        pst.setString(2, lastName);
+        ResultSet rs = pst.executeQuery();
+        con.close();
+
+        rs.next();
+
+        return rs.getInt(1);
+    }
+
+    private int addToAuthors(String name, String lastName) throws SQLException {
+        Connection con = DriverManager.getConnection(url, user, password);
+        PreparedStatement pst = con.prepareStatement(
+                "select  ID from authors WHERE first_name = ? AND surname = ?");
+        pst.setString(1, name);
+        pst.setString(2, lastName);
+
+        ResultSet rs = pst.executeQuery();
+        con.close();
+
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+        else{
+            return createNewAuthors(name, lastName);
+        }
+
     }
 }
