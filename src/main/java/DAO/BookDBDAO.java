@@ -263,10 +263,10 @@ public class BookDBDAO implements IDAOBook{
     }
 
     private int createNewAuthors(String name, String lastName) throws SQLException {
-        String AddToUser_tableStatement = "INSERT INTO authors VALUES (DEFAULT, ?, ?)";
+        String query = "INSERT INTO authors VALUES (DEFAULT, ?, ?)";
 
         Connection con = DriverManager.getConnection(url, user, password);
-        PreparedStatement pst = con.prepareStatement(AddToUser_tableStatement);
+        PreparedStatement pst = con.prepareStatement(query);
 
         pst.setString(1, name);
         pst.setString(2, lastName);
