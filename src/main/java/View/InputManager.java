@@ -39,7 +39,7 @@ public class InputManager extends AbstractInput {
         Scanner scanFromUser = new Scanner(System.in);
 
         while(!scanFromUser.hasNextLong()){
-            output.print("Wrong input! Please insert the integer number.");
+            output.print("Wrong input! Please insert the long number.");
             scanFromUser.next();
         }
         input = scanFromUser.nextLong();
@@ -53,7 +53,7 @@ public class InputManager extends AbstractInput {
         Scanner scanFromUser = new Scanner(System.in);
 
         while(!scanFromUser.hasNextFloat()){
-            output.print("Wrong input! Please insert the integer number.");
+            output.print("Wrong input! Please insert the float number.");
             scanFromUser.next();
         }
         input = scanFromUser.nextFloat();
