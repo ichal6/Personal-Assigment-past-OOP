@@ -39,11 +39,7 @@ public class ControllerLibrary {
             case 0:
                 return false;
             case 1:
-                try {
-                    dao.addBook(createBook());
-                }catch(NumberFormatException ex){
-                    output.print("You provide wrong data!");
-                }
+                addBook();
                 break;
             case 2:
                 long ISBN = input.getLongFromUser("Please provide ISBN to remove");
@@ -75,6 +71,14 @@ public class ControllerLibrary {
                 break;
         }
         return true;
+    }
+
+    private void addBook(){
+        try {
+            dao.addBook(createBook());
+        }catch(NumberFormatException ex){
+            output.print("You provide wrong data!");
+        }
     }
 
     private Builder createBook() throws NumberFormatException{
