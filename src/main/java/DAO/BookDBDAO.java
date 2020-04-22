@@ -168,19 +168,12 @@ public class BookDBDAO implements IDAOBook{
         }
     }
 
-    @Override
-    public Map<String, Book> searchBooks(String surname) {
+    private Map<String, Book> fillDicOfBooks(ResultSet rs){
         dicOfBooks = new TreeMap<>();
-        try (Connection con = DriverManager.getConnection(url, user, password);
-             PreparedStatement pst = con.prepareStatement(
-                     "select  \"ISBN\" ,first_name, surname, title, name ,  publication_year, price from books inner join authors on books.author_id=authors.ID inner join publishers on books.publisher_id=publishers.ID WHERE surname = ?"))
-        {
-            pst.setString(1, surname);
-            ResultSet rs = pst.executeQuery();
-
+        try {
             while (rs.next()) {
                 Book book = new Book(new Builder()
-                        .withISBN(rs.getLong(0))
+                        .withISBN(rs.getLong(1))
                         .withFirstName(rs.getString(2))
                         .withSurname(rs.getString(3))
                         .withTitle(rs.getString(4))
@@ -198,26 +191,34 @@ public class BookDBDAO implements IDAOBook{
     }
 
     @Override
-    public Map<String, Book> getBooks(){
-        dicOfBooks = new TreeMap<>();
+    public Map<String, Book> searchBooks(String surname) {
+        ResultSet rs = null;
         try (Connection con = DriverManager.getConnection(url, user, password);
              PreparedStatement pst = con.prepareStatement(
-                     "select  \"ISBN\" ,first_name, surname, title, name ,  publication_year, price from books inner join authors on books.author_id=authors.ID inner join publishers on books.publisher_id=publishers.ID"
-             );
-             ResultSet rs = pst.executeQuery()) {
+                     "select  \"ISBN\" ,first_name, surname, title, name ,  publication_year, price from books inner join authors on books.author_id=authors.ID inner join publishers on books.publisher_id=publishers.ID WHERE surname = ?"))
+        {
+            pst.setString(1, surname);
+            rs = pst.executeQuery();
+            fillDicOfBooks(rs);
 
-            while (rs.next()) {
-                Book book = new Book(new Builder()
-                        .withISBN(rs.getLong(1))
-                        .withFirstName(rs.getString(2))
-                        .withSurname(rs.getString(3))
-                        .withTitle(rs.getString(4))
-                        .withName(rs.getString(5))
-                        .withPublicationYear(rs.getInt(6))
-                        .withPrice(rs.getFloat(7)));
+        } catch (SQLException ex) {
+            Logger lgr = Logger.getLogger(BookDBDAO.class.getName());
+            lgr.log(Level.SEVERE,"Return failed books " + ex.getMessage(), ex);
+        }
+        return dicOfBooks;
+    }
 
-                dicOfBooks.put(book.getTitle() ,book);
-            }
+    @Override
+    public Map<String, Book> getBooks(){
+        ResultSet rs = null;
+        try (Connection con = DriverManager.getConnection(url, user, password);
+             PreparedStatement pst = con.prepareStatement(
+                     "select  \"ISBN\" ,first_name, surname, title, name ,  publication_year, price from books inner join authors on books.author_id=authors.ID inner join publishers on books.publisher_id=publishers.ID"))
+             {
+             rs = pst.executeQuery();
+             fillDicOfBooks(rs);
+
+
         } catch (SQLException ex) {
             Logger lgr = Logger.getLogger(BookDBDAO.class.getName());
             lgr.log(Level.SEVERE,"Return failed books " + ex.getMessage(), ex);
