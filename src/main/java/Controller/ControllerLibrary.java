@@ -22,7 +22,7 @@ public class ControllerLibrary {
         boolean isRun;
         do{
             displayMenu();
-            int optionNumber = input.getInputFromUser("Please provide options:");
+            int optionNumber = input.getIntFromUser("Please provide options:");
             isRun = switchOptions(optionNumber);
         }while(isRun);
     }
@@ -43,7 +43,7 @@ public class ControllerLibrary {
                 break;
             case 2:
                 long ISBN = input.getLongFromUser("Please provide ISBN to remove");
-                int price =  input.getInputFromUser("Please provide new price of product");
+                int price =  input.getIntFromUser("Please provide new price of product");
                 dao.editBook(ISBN ,price);
                 break;
             case 3:

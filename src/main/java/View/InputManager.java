@@ -10,7 +10,7 @@ public class InputManager extends AbstractInput {
     }
 
     @Override
-    public int getInputFromUser(String message) {
+    public int getIntFromUser(String message) {
         output.print(message);
         int input = 0;
         Scanner scanFromUser = new Scanner(System.in);
