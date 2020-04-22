@@ -14,6 +14,17 @@ public class OutputManager extends AbstractOutput{
 
     @Override
     public void print(Map<String, Book> books) {
+        int width = 155;
+        String label = String.format("| %-20s | %-20s | %-20s | %-30s | %-20s  |%-20s | %-20s \n%s",
+                "ISBN",
+                "first name of author",
+                "last name of author",
+                "title",
+                "publisher",
+                "publication of Year",
+                "price",
+                "-".repeat(width));
+        System.out.println(label);
         for (Map.Entry<String,Book> book: books.entrySet() ) {
             System.out.println(book.getValue().toString());
         }
