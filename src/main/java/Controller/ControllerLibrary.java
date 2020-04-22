@@ -1,6 +1,7 @@
 package Controller;
 
 import DAO.BookDBDAO;
+import DAO.IDAOBook;
 import Model.Builder;
 import View.AbstractInput;
 import View.AbstractOutput;
@@ -8,10 +9,10 @@ import View.AbstractOutput;
 public class ControllerLibrary {
     private AbstractOutput output;
     private AbstractInput input;
-    private BookDBDAO dao;
+    private IDAOBook dao;
 
 
-    public ControllerLibrary(AbstractOutput output, AbstractInput input, BookDBDAO bookDBDAO) {
+    public ControllerLibrary(AbstractOutput output, AbstractInput input, IDAOBook bookDBDAO) {
         this.output = output;
         this.input = input;
         this.dao = bookDBDAO;
