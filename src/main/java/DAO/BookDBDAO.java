@@ -156,9 +156,9 @@ public class BookDBDAO implements IDAOBook{
             String query = String.format("select  * from books inner join authors on books.author_id=authors.ID inner join publishers on books.publisher_id=publishers.ID WHERE first_name = '%s' AND surname = '%s'",singleAuthor.getFirstName(), singleAuthor.getSurname());
             int count = 0;
             try (Connection con = DriverManager.getConnection(url, user, password);
-                 PreparedStatement pst = con.prepareStatement(query);
-                 ResultSet rs = pst.executeQuery()) {
-
+                 PreparedStatement pst = con.prepareStatement(query))
+            {
+                ResultSet rs = pst.executeQuery();
                 while (rs.next()) {
                     count++;
                 }
@@ -177,9 +177,10 @@ public class BookDBDAO implements IDAOBook{
         dicOfBooks = new TreeMap<>();
         String query = String.format("select  \"ISBN\" ,first_name, surname, title, name ,  publication_year, price from books inner join authors on books.author_id=authors.ID inner join publishers on books.publisher_id=publishers.ID WHERE publication_year >= %d", year);
         try (Connection con = DriverManager.getConnection(url, user, password);
-             PreparedStatement pst = con.prepareStatement(query);
-             ResultSet rs = pst.executeQuery()) {
-             fillDicOfBooks(rs);
+             PreparedStatement pst = con.prepareStatement(query))
+        {
+            ResultSet rs = pst.executeQuery();
+            fillDicOfBooks(rs);
         } catch (SQLException ex) {
             Logger lgr = Logger.getLogger(BookDBDAO.class.getName());
             lgr.log(Level.SEVERE,"Return failed books " + ex.getMessage(), ex);
@@ -192,12 +193,11 @@ public class BookDBDAO implements IDAOBook{
         float sum = 0;
         String query = "SELECT price FROM books";
         try (Connection con = DriverManager.getConnection(url, user, password);
-             PreparedStatement pst = con.prepareStatement(query);
-             ResultSet rs = pst.executeQuery()) {
-
+             PreparedStatement pst = con.prepareStatement(query))
+        {
+            ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 sum += rs.getFloat(1);
-                //listOfAuthors.add(new Author(rs.getString(1), rs.getString(2)));
             }
         } catch (SQLException ex) {
             Logger lgr = Logger.getLogger(BookDBDAO.class.getName());
