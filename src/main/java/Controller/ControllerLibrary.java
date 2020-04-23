@@ -9,6 +9,16 @@ public class ControllerLibrary {
     private AbstractOutput output;
     private AbstractInput input;
     private IDAOBook dao;
+    private final int EXIT = 0;
+    private final int ADD_NEW_BOOK = 1;
+    private final int EDIT_BOOK = 2;
+    private final int DELETE_BOOK = 3;
+    private final int SEARCH_BOOKS = 4;
+    private final int DISPLAY_ALL_BOOKS = 5;
+    private final int COUNT_BOOKS_BY_AUTHORS = 6;
+    private final int BOOKS_FROM_LAST_TEN_YEARS = 7;
+    private final int SUM_ALL_PRICE_OF_BOOKS = 8;
+    private final int DISPLAY_FULL_NAME_OF_AUTHORS = 9;
 
 
     public ControllerLibrary(AbstractOutput output, AbstractInput input, IDAOBook bookDBDAO) {
@@ -36,37 +46,37 @@ public class ControllerLibrary {
 
     private boolean switchOptions(int optionNumber){
         switch (optionNumber){
-            case 0:
+            case EXIT:
                 return false;
-            case 1:
+            case ADD_NEW_BOOK:
                 addBook();
                 break;
-            case 2:
+            case EDIT_BOOK:
                 long ISBN = input.getLongFromUser("Please provide ISBN to edit");
                 float price =  input.getFloatFromUser("Please provide new price of product");
                 dao.editBook(ISBN ,price);
                 break;
-            case 3:
-                long ISBN_search = input.getLongFromUser("Please provide ISBN:");
+            case DELETE_BOOK:
+                long ISBN_search = input.getLongFromUser("Please provide ISBN to delete:");
                 dao.deleteBook(ISBN_search);
                 break;
-            case 4:
+            case SEARCH_BOOKS:
                 String surname = input.getStringInput("Please provide surname of author");
                 output.print(dao.searchBooks(surname));
                 break;
-            case 5:
+            case DISPLAY_ALL_BOOKS:
                 output.print(dao.getBooks());
                 break;
-            case 6:
+            case COUNT_BOOKS_BY_AUTHORS:
                 output.printAuthors(dao.getCountBooksByAuthor());
                 break;
-            case 7:
+            case BOOKS_FROM_LAST_TEN_YEARS:
                 output.print(dao.getBooksFromLastTenYears());
                 break;
-            case 8:
+            case SUM_ALL_PRICE_OF_BOOKS:
                 output.print(String.format("Sum all price of books = %.2f", dao.getSumOfLibrary()));
                 break;
-            case 9:
+            case DISPLAY_FULL_NAME_OF_AUTHORS:
                 output.print(dao.getAllAuthors());
                 break;
         }
