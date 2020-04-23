@@ -10,7 +10,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class BookDBDAO implements IDAOBook{
+public class BookDBDAO implements IBookDAO {
 
     private final String url;
     private final String user;

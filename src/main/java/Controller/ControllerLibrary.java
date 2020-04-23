@@ -1,6 +1,6 @@
 package Controller;
 
-import DAO.IDAOBook;
+import DAO.IBookDAO;
 import Model.Builder;
 import View.AbstractInput;
 import View.AbstractOutput;
@@ -8,7 +8,7 @@ import View.AbstractOutput;
 public class ControllerLibrary {
     private AbstractOutput output;
     private AbstractInput input;
-    private IDAOBook dao;
+    private IBookDAO dao;
     private final int EXIT = 0;
     private final int ADD_NEW_BOOK = 1;
     private final int EDIT_BOOK = 2;
@@ -21,7 +21,7 @@ public class ControllerLibrary {
     private final int DISPLAY_FULL_NAME_OF_AUTHORS = 9;
 
 
-    public ControllerLibrary(AbstractOutput output, AbstractInput input, IDAOBook bookDBDAO) {
+    public ControllerLibrary(AbstractOutput output, AbstractInput input, IBookDAO bookDBDAO) {
         this.output = output;
         this.input = input;
         this.dao = bookDBDAO;

@@ -7,7 +7,7 @@ import Model.Builder;
 import java.util.List;
 import java.util.Map;
 
-public interface IDAOBook {
+public interface IBookDAO {
     void addBook(Builder newBook);
     void editBook(long ISBN, float price);
     void deleteBook(long ISBN);
